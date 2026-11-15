@@ -14,24 +14,25 @@
       -webkit-tap-highlight-color: transparent;
       user-select: none;
     }
-    html, body {
+    html, 
+        body {
       margin: 0;
       padding: 0;
-      width: 100%;
-      height: 100%;
+      height: 100dvh;
       overflow: hidden;
-      background: #fff;
-      color: #1c1e21;
+      display: flex;
+      justify-content: center;
+      background: #f0f2f5;
     }
     .app {
       width: 100%;
-      max-width: 480px;
+      max-width: 450px;
       height: 100dvh;
-      margin: 0 auto;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: calc(12px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom)) 16px;
+      padding: 8px 12px;
+      box-sizing: border-box;
     }
       .result-box {
       flex: 1;
