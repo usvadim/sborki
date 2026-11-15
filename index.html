@@ -33,10 +33,10 @@
       justify-content: space-between;
       padding: calc(12px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom)) 16px;
     }
-
-    /* 1. ВЕРХНЯЯ ЧАСТЬ: Вывод информации */
-    .result-box {
+      .result-box {
       flex: 1;
+      display: flex;
+      flex-direction: column;
       background: #f5f7fa;
       border-radius: 20px;
       padding: 16px;
@@ -45,21 +45,28 @@
       margin-bottom: 14px;
       user-select: text;
     }
+
+    .top-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
     .code-badge {
-      display: inline-block;
       background: #0066ff;
       color: #fff;
-      font-size: 13px;
+      font-size: 16px;
       font-weight: 700;
       padding: 4px 10px;
       border-radius: 8px;
-      margin-bottom: 10px;
+      margin: 0;
     }
     .result-title {
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 700;
-      margin: 0 0 8px 0;
+      margin: 0;
     }
+
     .result-text {
       font-size: 16px;
       line-height: 1.45;
@@ -67,37 +74,96 @@
       margin: 0;
       white-space: pre-line;
     }
-    .result-img {
-      width: 100%;
-      max-height: 240px;
+    .map-wrap {
+      position: relative;
+      display: inline-block;
+      align-self: center;
+      margin-top: auto;
       border-radius: 12px;
-      margin-top: 12px;
-      display: none;
-      object-fit: contain;
+      overflow: hidden;
       background: #fff;
     }
 
-    /* НИЖНЯЯ ЗОНА УПРАВЛЕНИЯ */
+    .result-img {
+      display: block;
+      max-width: 100%;
+      max-height: 220px;
+      width: auto;
+      height: auto;
+    }
+        .map-dot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: #e53935;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.7);
+      animation: dotPulse 1.5s infinite;
+      pointer-events: none;
+      display: none;
+    }
+
+    @keyframes dotPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.75);
+      }
+      70% {
+        box-shadow: 0 0 0 12px rgba(229, 57, 53, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(229, 57, 53, 0);
+      }
+    }
+
     .controls-zone {
       flex-shrink: 0;
     }
 
-    /* 2. ВЫБОР РЕЖИМА: Надпись слева + переключатель справа */
     .mode-wrapper {
       display: flex;
-      align-items: center;
+      flex-direction: row;
+      align-items: stretch;
       justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+    .cat-count-box {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #333;
       background: #f5f7fa;
       border: 1px solid #e4e6eb;
       border-radius: 16px;
-      padding: 10px 14px;
-      margin-bottom: 12px;
+      padding: 6px 12px;
+      white-space: nowrap;
+    }
+    .mode-right {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      background: #f5f7fa;
+      border: 1px solid #e4e6eb;
+      border-radius: 16px;
+      padding: 6px 8px 6px 14px;
+      flex-shrink: 0;
     }
     .mode-title-text {
+      margin: 0;
       font-size: 16px;
       font-weight: 700;
-      color: #1c1e21;
+      color: #333;
+      white-space: nowrap;
     }
+
+
     .mode-slider-track {
       position: relative;
       display: grid;
@@ -134,12 +200,14 @@
       color: #65676b;
       transition: color 0.2s;
     }
+    .mode-slider-track:not(.mode-1) .mode-thumb + .mode-label {
+      color: #ffffff !important;
+    }
+
     .mode-slider-track:not(.mode-1) .mode-label:first-of-type,
     .mode-slider-track.mode-1 .mode-label:last-of-type {
       color: #fff;
     }
-
-    /* 3. ВВОД ЧИСЛА И ПОЛЗУНОК */
     .number-wrapper {
       background: #f5f7fa;
       border: 1px solid #e4e6eb;
@@ -189,8 +257,6 @@
       accent-color: #0066ff;
       cursor: pointer;
     }
-
-    /* 4. БОЛЬШИЕ КНОПКИ (8 вариантов) В САМОМ НИЗУ */
     .variants-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -216,7 +282,11 @@
       color: #fff;
       box-shadow: 0 3px 10px rgba(0, 102, 255, 0.25);
     }
-        /* ЭКРАН ПИН-КОДА */
+      .var-btn.empty-cat {
+      opacity: 0.4;
+      background: #e9ecef;
+      color: #888;
+    }
     .pin-overlay {
       position: fixed;
       inset: 0;
@@ -283,37 +353,42 @@
 
 <div class="app">
   <!-- 1. ВЕРХ: Вывод информации -->
-  <div class="result-box">
-    <div class="code-badge" id="codeDisplay">Арматура: 0 0 1</div>
-    <h3 class="result-title" id="resTitle"></h3>
+    <div class="result-box">
+    <div class="top-row">
+      <div class="code-badge" id="codeDisplay">Арматура: 0 0 1</div>
+      <h3 class="result-title" id="resTitle"></h3>
+    </div>
     <p class="result-text" id="resText"></p>
-    <img id="resImg" class="result-img" src="" alt="Изображение">
+    <div class="map-wrap">
+      <img id="resImg" class="result-img" src="map1.jpeg" alt="Карта">
+      <div class="map-dot" id="mapDot"></div>
+    </div>
+
   </div>
 
-  <!-- НИЗ: Элементы управления под большой палец -->
   <div class="controls-zone">
     
-    <!-- 2. Выбор режима: надпись слева + переключатель 0-1 справа -->
     <div class="mode-wrapper">
-      <span class="mode-title-text">Выбор режима</span>
-      <div class="mode-slider-track" id="modeTrack" onclick="toggleMode()">
-        <div class="mode-thumb"></div>
-        <div class="mode-label">8</div>
-        <div class="mode-label">9</div>
+      <div class="cat-count-box" id="catCount"></div>
+      <div class="mode-right">
+        <span class="mode-title-text">Блок</span>
+        <div class="mode-slider-track" id="modeTrack" onclick="toggleMode()">
+          <div class="mode-thumb"></div>
+          <div class="mode-label">8</div>
+          <div class="mode-label">9</div>
+        </div>
       </div>
     </div>
 
-    <!-- 3. Ввод числа (клавиатура + ползунок) -->
     <div class="number-wrapper">
       <div class="number-top-row">
         <button class="step-btn" onclick="changeNum(-1)">−</button>
         <input type="number" inputmode="numeric" id="numInput" class="num-input" value="1" min="1" max="300" oninput="onInputNum(this.value)">
         <button class="step-btn" onclick="changeNum(1)">+</button>
       </div>
-      <input type="range" id="numSlider" min="1" max="300" value="1" oninput="onInputNum(this.value)">
+      <input type="range" id="numSlider" min="0" max="0" value="0" oninput="onSliderMove(this.value)">
     </div>
 
-    <!-- 4. Большие кнопки 8 вариантов -->
     <div class="variants-grid" id="variants"></div>
 
   </div>
@@ -322,10 +397,7 @@
 <script src="database.js"></script>
 
 <script>
-  // ВАШ СЕКРЕТНЫЙ КОД ДОСТУПА (поменяйте цифры в кавычках на свои):
   const ACCESS_PIN = "2100";
-
-  // Проверяем, вводился ли код ранее на этом телефоне
   if (localStorage.getItem("sklad_auth") === ACCESS_PIN) {
     document.getElementById("pinScreen").classList.add("hidden");
   }
@@ -344,8 +416,32 @@
 
   let state = { mode: 0, variant: 0, number: 1 };
 
-    // Впишите сюда любые 8 цифр или названий для кнопок:
   const buttonNames = ["Б", "С", "Р", "Д", "КГ", "К", "ТП", "Т"];
+
+  const warehouseMaps = ["map1.jpeg", "map2.jpeg"];
+
+    function findFirstExistingNumber(catName, modeIdx) {
+    if (typeof productsDB === "undefined") return 1;
+    for (let n = 1; n <= 300; n++) {
+      const k1 = catName + " " + n;
+      const k2 = catName + n;
+      const val = productsDB.hasOwnProperty(k1) ? productsDB[k1] : (productsDB.hasOwnProperty(k2) ? productsDB[k2] : null);
+      if (Array.isArray(val)) {
+        const s = val.slice(modeIdx, modeIdx + 1).join("").trim();
+        if (s && s !== "-" && s !== "0") {
+          return n;
+        }
+      }
+    }
+    return null;
+  }
+
+  function updateCategoryButtonsState() {
+    document.querySelectorAll('.var-btn').forEach((btn, idx) => {
+      const firstNum = findFirstExistingNumber(buttonNames.slice(idx, idx + 1).join(""), state.mode);
+      btn.classList.toggle('empty-cat', firstNum === null);
+    });
+  }
 
   const variantsContainer = document.getElementById('variants');
   buttonNames.forEach((name, i) => {
@@ -355,17 +451,76 @@
     btn.onclick = () => {
       document.querySelectorAll('.var-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      state.variant = i; // В базе данных номер кнопки по-прежнему считается от 0 до 7
-      updateResult();
+      state.variant = i;
+
+      const firstNum = findFirstExistingNumber(name, state.mode);
+      if (firstNum !== null) {
+        onInputNum(firstNum);
+      } else {
+        updateResult();
+        document.getElementById('resTitle').innerText = "";
+        document.getElementById('resText').innerText = "Данной арматуры нет на этом блоке";
+      }
     };
     variantsContainer.appendChild(btn);
   });
-
 
   function toggleMode() {
     state.mode = state.mode === 0 ? 1 : 0;
     const track = document.getElementById('modeTrack');
     track.classList.toggle('mode-1', state.mode === 1);
+    updateCategoryButtonsState();
+
+    const currentCat = buttonNames.slice(state.variant, state.variant + 1).join("");
+    const firstNum = findFirstExistingNumber(currentCat, state.mode);
+    if (firstNum !== null) {
+      onInputNum(firstNum);
+    } else {
+      updateResult();
+      document.getElementById('resTitle').innerText = "";
+      document.getElementById('resText').innerText = "Данной арматуры нет на этом блоке";
+    }
+  }
+  function getExistingNumbersList() {
+    const list = [];
+    if (typeof productsDB === "undefined") return list;
+    const catName = buttonNames.slice(state.variant, state.variant + 1).join("");
+    for (let n = 1; n <= 300; n++) {
+      const k1 = catName + " " + n;
+      const k2 = catName + n;
+      const val = productsDB.hasOwnProperty(k1) ? productsDB[k1] : (productsDB.hasOwnProperty(k2) ? productsDB[k2] : null);
+      if (Array.isArray(val)) {
+        const s = val.slice(state.mode, state.mode + 1).join("").trim();
+        if (s && s !== "-" && s !== "0") {
+          list.push(n);
+        }
+      }
+    }
+    return list;
+  }
+
+  function syncSliderRange(existingList, currentNum) {
+    const slider = document.getElementById('numSlider');
+    if (existingList.length === 0) {
+      slider.min = 1;
+      slider.max = 1;
+      slider.value = 1;
+      return;
+    }
+    slider.min = 0;
+    slider.max = existingList.length - 1;
+    const idx = existingList.indexOf(currentNum);
+    slider.value = idx !== -1 ? idx : 0;
+  }
+
+  function onSliderMove(idxVal) {
+    const list = getExistingNumbersList();
+    if (list.length === 0) return;
+    const idx = parseInt(idxVal);
+    if (isNaN(idx) || idx < 0 || idx >= list.length) return;
+    const realNum = list.slice(idx, idx + 1).shift();
+    state.number = realNum;
+    document.getElementById('numInput').value = realNum;
     updateResult();
   }
 
@@ -373,25 +528,65 @@
     if (val === "") return;
     let n = parseInt(val);
     if (isNaN(n)) return;
-    if (n < 1) n = 1;
-    if (n > 300) n = 300;
+    const list = getExistingNumbersList();
+    if (list.length > 0) {
+      if (list.indexOf(n) === -1) {
+        let closest = list.slice(0, 1).shift();
+        for (let i = 0; i < list.length; i++) {
+          const item = list.slice(i, i + 1).shift();
+          if (Math.abs(item - n) < Math.abs(closest - n)) {
+            closest = item;
+          }
+        }
+        n = closest;
+      }
+    } else {
+      if (n < 1) n = 1;
+      if (n > 300) n = 300;
+    }
     state.number = n;
     document.getElementById('numInput').value = n;
-    document.getElementById('numSlider').value = n;
+    syncSliderRange(list, n);
     updateResult();
   }
 
   function changeNum(delta) {
-    onInputNum(state.number + delta);
+    const list = getExistingNumbersList();
+    if (list.length === 0) return;
+    const idx = list.indexOf(state.number);
+    let nextIdx = idx === -1 ? 0 : idx + delta;
+    if (nextIdx < 0) nextIdx = 0;
+    if (nextIdx >= list.length) nextIdx = list.length - 1;
+    const nextNum = list.slice(nextIdx, nextIdx + 1).shift();
+    state.number = nextNum;
+    document.getElementById('numInput').value = nextNum;
+    syncSliderRange(list, nextNum);
+    updateResult();
   }
 
     function updateResult() {
-    // 1. Обновляем синюю плашку Арматура сверху
+        document.getElementById('mapDot').style.display = "none";
     const modeSym = document.querySelectorAll('#modeTrack .mode-label').item(state.mode).innerText;
-    const catSym = document.querySelector('.var-btn.active').innerText;
-    document.getElementById('codeDisplay').innerText = "Арматура: " + modeSym + catSym + " " + state.number;
+    const catSym = document.querySelector('.var-btn.active').innerText.trim();
 
-    // 2. Собираем ключ поиска: "вашСимвол_номерАрматуры" (например: "с_100")
+    let realCount = 0;
+    if (typeof productsDB !== "undefined") {
+      for (const key in productsDB) {
+        if (key.startsWith(catSym + " ") || (key.startsWith(catSym) && !isNaN(parseInt(key.slice(catSym.length))))) {
+          const val = productsDB[key];
+          const s = Array.isArray(val) ? val.slice(state.mode, state.mode + 1).join("").trim() : "";
+          if (s && s !== "-" && s !== "0") {
+            realCount++;
+          }
+        }
+      }
+    }
+    document.getElementById('catCount').innerText = "Позиций: " + realCount;
+syncSliderRange(getExistingNumbersList(), state.number);
+    document.getElementById('codeDisplay').innerText = "Арматура: " + modeSym + catSym + " " + state.number;
+    document.getElementById('resImg').src = warehouseMaps[state.mode];
+
+
     const productKey = catSym + state.number;
 
     const titleEl = document.getElementById('resTitle');
@@ -403,7 +598,6 @@
       return;
     }
 
-    // 3. Берем номер сборки для выбранного блока
     const shelves = productsDB[productKey];
     const shelf = state.mode === 0 ? shelves.slice(0, 1).join("") : shelves.slice(1, 2).join("");
     const warehouseDB = state.mode === 0 ? warehouse1DB : warehouse2DB;
@@ -417,8 +611,19 @@
         titleEl.innerText = "Сборка: " + shelf;
     const cleanShelf = shelf.split("-").shift().split(",").shift().trim();
 
-    // 4. По номеру шкафа достаем 5 параметров места со Страницы 3 или 4
-        if (warehouseDB.hasOwnProperty(cleanShelf)) {
+        const dotEl = document.getElementById('mapDot');
+    const coordsDB = state.mode === 0 ? (typeof mapCoords1 !== "undefined" ? mapCoords1 : {}) : (typeof mapCoords2 !== "undefined" ? mapCoords2 : {});
+    const shelfUpper = cleanShelf.toUpperCase();
+    if (coordsDB.hasOwnProperty(shelfUpper)) {
+      const pt = coordsDB[shelfUpper];
+      dotEl.style.left = pt.slice(0, 1) + "%";
+      dotEl.style.top = pt.slice(1, 2) + "%";
+      dotEl.style.display = "block";
+    } else {
+      dotEl.style.display = "none";
+    }
+
+    if (warehouseDB.hasOwnProperty(cleanShelf)) {
       const loc = warehouseDB[cleanShelf];
       const labels = ["Помещение", "Отметка", "Ряд", "Сторона", "Ось"];
       textEl.innerText = labels.map(function(name, i) {
@@ -427,11 +632,43 @@
     } else {
       textEl.innerText = "Для сборки «" + cleanShelf + "» не указано расположение на блоке.";
     }
-
+  }
+    updateCategoryButtonsState();
+  const initFirst = findFirstExistingNumber(buttonNames.slice(0, 1).join(""), state.mode);
+  if (initFirst !== null) {
+    state.number = initFirst;
+    document.getElementById('numInput').value = initFirst;
+    document.getElementById('numSlider').value = initFirst;
   }
 
-
   updateResult();
+      /*
+  const collectedCoords = {};
+  document.getElementById('resImg').addEventListener('click', function(e) {
+    const rect = this.getBoundingClientRect();
+    const x = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+    const y = Math.round(((e.clientY - rect.top) / rect.height) * 100);
+    const dot = document.getElementById('mapDot');
+    dot.style.left = x + "%";
+    dot.style.top = y + "%";
+    dot.style.display = "block";
+
+    const shelfNum = prompt("Введите номер шкафа (или нажмите Отмена, чтобы получить весь список):");
+    if (shelfNum === null) {
+      let out = "";
+      for (const k in collectedCoords) {
+        out += '"' + k + '": [' + collectedCoords[k] + '],\n';
+      }
+      prompt("Скопируйте готовый список в database.js:", out);
+      return;
+    }
+    const clean = shelfNum.trim().toUpperCase();
+    if (clean) {
+      collectedCoords[clean] = x + ", " + y;
+    }
+  });
+  */
+
 </script>
 
 </body>
