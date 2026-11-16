@@ -1,0 +1,15 @@
+{
+  "name": "ТЭЦ-21 КТЦ-2",
+  "short_name": "ТЭЦ-21",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f0f2f5",
+  "theme_color": "#f0f2f5",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

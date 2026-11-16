@@ -6,6 +6,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.png">
+
   <title>Сборки</title>
   <style>
     * {
@@ -15,7 +18,7 @@
       user-select: none;
     }
     html, 
-        body {
+      body {
       margin: 0;
       padding: 0;
       height: 100dvh;
@@ -353,6 +356,7 @@
 
 
 <div class="app">
+  <!-- 1. ВЕРХ: Вывод информации -->
     <div class="result-box">
     <div class="top-row">
       <div class="code-badge" id="codeDisplay">Арматура: 0 0 1</div>
@@ -581,7 +585,7 @@
         }
       }
     }
-    document.getElementById('catCount').innerText = "Арматур: " + realCount;
+    document.getElementById('catCount').innerText = "Позиций: " + realCount;
 syncSliderRange(getExistingNumbersList(), state.number);
     document.getElementById('codeDisplay').innerText = "Арматура: " + modeSym + catSym + " " + state.number;
     document.getElementById('resImg').src = warehouseMaps[state.mode];
