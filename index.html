@@ -36,6 +36,7 @@
       justify-content: space-between;
       padding: 8px 12px;
       box-sizing: border-box;
+      padding-bottom: calc(20px + env(safe-area-inset-bottom));
     }
       .result-box {
       flex: 1;
@@ -95,7 +96,7 @@
       width: auto;
       height: auto;
     }
-        .map-dot {
+    .map-dot {
       position: absolute;
       width: 14px;
       height: 14px;
@@ -120,11 +121,9 @@
         box-shadow: 0 0 0 0 rgba(229, 57, 53, 0);
       }
     }
-
     .controls-zone {
       flex-shrink: 0;
     }
-
     .mode-wrapper {
       display: flex;
       flex-direction: row;
@@ -166,8 +165,6 @@
       color: #333;
       white-space: nowrap;
     }
-
-
     .mode-slider-track {
       position: relative;
       display: grid;
@@ -286,7 +283,7 @@
       color: #fff;
       box-shadow: 0 3px 10px rgba(0, 102, 255, 0.25);
     }
-      .var-btn.empty-cat {
+    .var-btn.empty-cat {
       opacity: 0.4;
       background: #e9ecef;
       color: #888;
