@@ -411,6 +411,13 @@
 <script src="database.js"></script>
 
 <script>
+  if (window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches) {
+    if (!sessionStorage.getItem('app_reloaded')) {
+      sessionStorage.setItem('app_reloaded', '1');
+      window.location.replace(window.location.pathname + '?t=' + Date.now());
+    }
+  }
+
   const ACCESS_PIN = "2100";
   if (localStorage.getItem("sklad_auth") === ACCESS_PIN) {
     document.getElementById("pinScreen").classList.add("hidden");
