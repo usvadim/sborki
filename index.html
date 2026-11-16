@@ -36,7 +36,7 @@
       user-select: none;
       -webkit-user-select: none;
     }
-    .app {
+        .app {
       width: 100%;
       max-width: 450px;
       height: 100dvh;
@@ -45,11 +45,11 @@
       justify-content: space-between;
       padding: 8px 12px;
       box-sizing: border-box;
-      @media all and (display-mode: standalone) {
-      .app {
-      padding-bottom: calc(18px + env(safe-area-inset-bottom));
-      }
     }
+    @media all and (display-mode: standalone) {
+      .app {
+        padding-bottom: calc(24px + env(safe-area-inset-bottom));
+      }
     }
       .result-box {
       flex: 1;
