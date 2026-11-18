@@ -18,7 +18,7 @@
       user-select: none;
     }
     html, 
-         body {
+    body {
       margin: 0;
       padding: 0;
       width: 100%;
@@ -36,7 +36,7 @@
       user-select: none;
       -webkit-user-select: none;
     }
-        .app {
+    .app {
       width: 100%;
       max-width: 450px;
       height: 100dvh;
@@ -47,11 +47,11 @@
       box-sizing: border-box;
     }
     @media all and (display-mode: standalone) {
-      .app {
+    .app {
         padding-bottom: calc(50px + env(safe-area-inset-bottom));
       }
     }
-      .result-box {
+    .result-box {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -630,7 +630,10 @@ syncSliderRange(getExistingNumbersList(), state.number);
     }
 
         titleEl.innerText = "Сборка: " + shelf;
-    const cleanShelf = shelf.split("-").shift().split(",").shift().trim();
+    let cleanShelf = shelf.split("-").shift().split(",").shift().trim().toUpperCase();
+    if (cleanShelf.startsWith("Р/З")) {
+      cleanShelf = cleanShelf.replace("Р/З", "").trim();
+    }
 
         const dotEl = document.getElementById('mapDot');
     const coordsDB = state.mode === 0 ? (typeof mapCoords1 !== "undefined" ? mapCoords1 : {}) : (typeof mapCoords2 !== "undefined" ? mapCoords2 : {});
